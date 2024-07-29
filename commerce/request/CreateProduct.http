@@ -1,0 +1,31 @@
+###
+# CREATE PARTNER
+POST {{host}}/api/v1/products
+Content-Type: application/json
+
+{
+  "partnerId": 268435457,
+  "productName": "hamburger",
+  "price": 10.20,
+  "currency": "EUR"
+}
+
+
+###
+# Response: 201 CREATED
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+
+{
+  "productId": 268435460
+}
+
+###
+
+# Response: 422 Unprocessable entity
+HTTP/1.1 422 Conflict
+Content-Type: application/json
+
+{
+  "message": "Partner with id 1 not exists."
+}

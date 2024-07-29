@@ -1,0 +1,42 @@
+{
+  "$schema": "helm_scheme.json",
+
+  "team": "..",
+  "environment": "test",
+  "cluster": "tst",
+  "component": "app",
+  "service": "customer",
+
+  "imageRepository": "...",
+  "imageTag": "_might_be_ignored_",
+
+  "consulTags": ["http"],
+  "ports": [{"port": 8080}],
+
+  "replicaCount": 2,
+
+  "cpuRequest": "100m",
+  "cpuLimit": "500m",
+  "memory": "1Gi",
+
+  "prometheusScrape": true,
+  "prometheusPort": 8080,
+
+  "vaultSecrets": {
+    "env-test/delivery/test/customer": {
+      "SPRING_DATASOURCE_MASTER_URL": "SPRING_DATASOURCE_MASTER_URL",
+      "SPRING_DATASOURCE_MASTER_USERNAME": "SPRING_DATASOURCE_MASTER_USERNAME",
+      "SPRING_DATASOURCE_MASTER_PASSWORD": "SPRING_DATASOURCE_MASTER_PASSWORD",
+      "SPRING_DATASOURCE_SLAVE_URL": "SPRING_DATASOURCE_SLAVE_URL",
+      "SPRING_DATASOURCE_SLAVE_USERNAME": "SPRING_DATASOURCE_SLAVE_USERNAME",
+      "SPRING_DATASOURCE_SLAVE_PASSWORD": "SPRING_DATASOURCE_SLAVE_PASSWORD",
+      "SPRING_FLYWAY_URL": "SPRING_FLYWAY_URL",
+      "SPRING_FLYWAY_USER": "SPRING_FLYWAY_USER",
+      "SPRING_FLYWAY_PASSWORD": "SPRING_FLYWAY_PASSWORD",
+      "SPRING_RABBITMQ_HOST": "SPRING_RABBITMQ_HOST",
+      "SPRING_RABBITMQ_PORT": "SPRING_RABBITMQ_PORT",
+      "SPRING_RABBITMQ_USERNAME": "SPRING_RABBITMQ_USERNAME",
+      "SPRING_RABBITMQ_PASSWORD": "SPRING_RABBITMQ_PASSWORD"
+    }
+  }
+}

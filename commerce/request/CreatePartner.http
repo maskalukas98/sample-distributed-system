@@ -1,0 +1,43 @@
+###
+# CREATE PARTNER
+POST {{host}}/api/v1/partners
+Content-Type: application/json
+
+{
+  "companyName": "Fast pizza delivery",
+  "country": "fr"
+}
+
+
+###
+# Response: 201 CREATED
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+
+{
+  "partnerId": 268435457
+}
+
+###
+
+# Response: 409 Conflict (Duplicate partner)
+HTTP/1.1 409 Conflict
+Content-Type: application/json
+
+{
+  "link": {
+    "rel": "self",
+    "href": "{{host}}/api/v1/partners/268435458"
+  },
+  "message": "Partner with provided company name 'Fast pizza delivery' already exists."
+}
+
+###
+
+# Response: 500 Internal server error
+HTTP/1.1 500 Internal server error
+Content-Type: application/json
+
+{
+  "message": "We're sorry, but something went wrong on our end. Please try again later."
+}

@@ -1,0 +1,41 @@
+###
+# GET ORDER
+POST {{host}}/api/v1/orders/1945441348356100
+Content-Type: application/json
+
+{
+  "id": 1935264867944450,
+  "customerId": 1,
+  "productId": 268435457,
+  "address": "Prague 11",
+  "createdAt": "2023-10-26T18:05:01.560268",
+  "statuses": [
+    {
+      "id": 1935264893110274,
+      "status": "created",
+      "isActive": true,
+      "updatedAt": "2023-10-26T18:05:01.560268"
+    }
+  ]
+}
+
+
+###
+# Response: 200 OK
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "orderId": 1943897450219523,
+  "status": "created"
+}
+
+###
+
+# Response: 404 NOT FOUND
+HTTP/1.1 404 NOT FOUND
+Content-Type: application/json
+
+{
+  "message": "Order with id: 1935264867944451 not exists."
+}

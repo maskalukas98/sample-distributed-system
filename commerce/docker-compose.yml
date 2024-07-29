@@ -1,0 +1,121 @@
+services:
+  app:
+    container_name: commerce
+    build:
+      dockerfile: docker/java/Dockerfile
+      context: .
+      target: base
+    ports:
+      - '8081:8081'
+    networks:
+      - fooddelivery_network
+    volumes:
+      - .:/app
+    depends_on:
+      - rabbitmq
+      - postgres-shard-de-write
+      - postgres-shard-de-read
+      - postgres-shard-fr-write
+      - postgres-shard-fr-read
+      - mock_http
+    profiles: [ 'full' ]
+  app-unit-test:
+    build:
+      dockerfile: docker/java/Dockerfile
+      context: .
+      target: test
+    volumes:
+      - .:/app
+    profiles: [ 'unit' ]
+  postgres-shard-de-write:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/postgres:14.9
+    ports:
+      - '5440:5432'
+    volumes:
+      - 'order_db_shard_de_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_USERNAME=admin
+      - POSTGRESQL_PASSWORD=admin123
+      - POSTGRESQL_DATABASE=order_de_db
+    networks:
+      - fooddelivery_network
+    profiles: [ 'full', 'infra'  ]
+  postgres-shard-de-read:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/postgres:14.9
+    ports:
+      - '5441:5432'
+    depends_on:
+      - postgres-shard-de-write
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgres-shard-de-write
+      - POSTGRESQL_PASSWORD=admin123
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+    networks:
+      - fooddelivery_network
+    profiles: [ 'full', 'infra'  ]
+  postgres-shard-fr-write:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/postgres:14.9
+    ports:
+      - '5442:5432'
+    volumes:
+      - 'order_db_shard_fr_data:/bitnami/postgresql'
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=master
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_USERNAME=admin
+      - POSTGRESQL_PASSWORD=admin123
+      - POSTGRESQL_DATABASE=order_fr_db
+    networks:
+      - fooddelivery_network
+    profiles: [ 'full', 'infra' ]
+  postgres-shard-fr-read:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/postgres:14.9
+    ports:
+      - '5443:5432'
+    depends_on:
+      - postgres-shard-fr-write
+    environment:
+      - POSTGRESQL_REPLICATION_MODE=slave
+      - POSTGRESQL_REPLICATION_USER=repl_user
+      - POSTGRESQL_REPLICATION_PASSWORD=repl_password
+      - POSTGRESQL_MASTER_HOST=postgres-shard-fr-write
+      - POSTGRESQL_PASSWORD=admin123
+      - POSTGRESQL_MASTER_PORT_NUMBER=5432
+    networks:
+      - fooddelivery_network
+    profiles: [ 'full', 'infra'  ]
+  rabbitmq:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/rabbit:3
+    container_name: 'rabbitmq_order'
+    ports:
+      - 5673:5672
+      - 15673:15672
+    networks:
+      - default
+      - fooddelivery_network
+    profiles: [ 'full', 'infra' ]
+  mock_http:
+    image: registry.gitlab.com/food-delivery5161742/container-registry/mock:3.1.6
+    ports:
+      - 7082:8082
+      - 7083:8083
+    volumes:
+      - ./docker/httpMock:/config
+    networks:
+      - default
+      - fooddelivery_network
+    profiles: [ 'full', 'infra' ]
+volumes:
+  order_db_shard_de_data:
+  order_db_shard_fr_data:
+
+networks:
+  fooddelivery_network:
+    driver: bridge

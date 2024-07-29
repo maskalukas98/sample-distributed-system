@@ -1,0 +1,43 @@
+
+service:
+  name: fooddelivery-customer
+  srvId: null
+  appCatId: ""
+  tier: HA
+  team: ...
+  productOwner:
+    - ....
+  techContacts:
+    - Lukáš Máška
+business:
+  requirement: "It is responsible for collecting and storing customer information, creating user accounts, and ensuring 
+  a seamless onboarding experience for new customers"
+  SLA:
+    availability: 99.95
+    response: 500
+technical:
+  criticality: B
+  documents:
+  security:
+    data: internal
+    reviewed: SonarQube
+infrastructure:
+  infraProvider: ...
+  platform: K8s
+  access:
+    accountStore: ...
+    accessType: web browser
+    fqdnPort: 80
+  apigw:
+    name: other
+    permalink: ...
+  logging:
+    name: Kibana
+    permalink: ...
+  monitoring:
+    name: Grafana
+    permalink: ...
+
+  alerting:
+    name: Sentry
+    permalink: ...

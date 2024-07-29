@@ -1,0 +1,22 @@
+GET {{host}}/api/v1/customers/100
+
+###
+# Response: 200 OK
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": 100,
+  "name": "John",
+  "surname": "Doe",
+  "email": "john@example.com"
+}
+
+###
+# Response: 404 Not Found
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+
+{
+  "message": "Customer with the ID 100 was not found."
+}

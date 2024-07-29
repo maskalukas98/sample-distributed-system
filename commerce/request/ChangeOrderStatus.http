@@ -1,0 +1,47 @@
+###
+# CHANGE ORDER STATUS
+PUT {{host}}/api/v1/orders/{orderId}/statuses
+Content-Type: application/json
+
+{
+  "event": "cancel"
+}
+
+
+###
+HTTP/1.1 201 CREATED
+Content-Type: application/json
+
+{
+  "newStatus": "cancelled"
+}
+
+###
+HTTP/1.1 404 NOT FOUND
+Content-Type: application/json
+
+{
+  "message": "Order with id: 1954186061154311 not exists."
+}
+
+###
+HTTP/1.1 409 CONFLICT
+Content-Type: application/json
+
+{
+  "currentState": "delivering",
+  "supportedEvents": [
+    "cancel",
+    "complete"
+  ],
+  "message": "Not supported event for the current state."
+}
+
+###
+HTTP/1.1 422 UNPROCESSABLE ENTITY
+Content-Type: application/json
+
+{
+  "finalState": "cancelled",
+  "message": "Order 1954919124830215 is already in final state."
+}

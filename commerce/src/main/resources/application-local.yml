@@ -1,0 +1,54 @@
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  datasource:
+    de-write:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5440/order_de_db
+      username: admin
+      password: admin123
+    de-read:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5441/order_de_db
+      username: admin
+      password: admin123
+    fr-write:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5442/order_fr_db
+      username: admin
+      password: admin123
+    fr-read:
+      driverClassName: org.postgresql.Driver
+      url: jdbc:postgresql://localhost:5443/order_fr_db
+      username: admin
+      password: admin123
+  flyway:
+    datasources:
+      - url: jdbc:postgresql://localhost:5440/order_de_db
+        user: admin
+        password: admin123
+      - url: jdbc:postgresql://localhost:5442/order_fr_db
+        user: admin
+        password: admin123
+  rabbitmq:
+    host: localhost
+    port: 5673
+    username: guest
+    password: guest
+    virtual-host: /
+server:
+  port: 8081
+customer:
+  api:
+    # client service: url: http://localhost:8080/api
+    url: http://localhost:7083/api
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "prometheus","health" ]
+health:
+  endpoint:
+    url: "http://localhost:8081/actuator/prometheus"

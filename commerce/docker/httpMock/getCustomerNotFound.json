@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/v1/customers/2"
+  },
+  "response": {
+    "statusCode": 404,
+    "headers": {
+      "Content-Type":["application/json"]
+    },
+    "body": ""
+  }
+}
